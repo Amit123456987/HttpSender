@@ -32,13 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  var url = Uri.parse('https://www.html2json.com/api/v1');
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  var url = Uri.parse('http://192.168.1.6:8000');
+  final TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
+              controller: _controller,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Password',
@@ -59,12 +55,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(
               onPressed: (){
+                var value = _controller.text;
+                print(value);
+
                 http.post(
                   url,
                   headers: <String, String>{
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                  },);
-
+                  },
+                  body: {
+                    'text': value
+                  }
+                );
               },
               child: Text("Send")
             ),
